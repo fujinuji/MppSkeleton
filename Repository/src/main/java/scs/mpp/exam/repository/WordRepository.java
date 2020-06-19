@@ -5,12 +5,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
-import scs.mpp.exam.model.Player;
+import scs.mpp.exam.model.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerRepository implements IPlayerRepository{
+public class WordRepository implements IWordRepository {
     private static SessionFactory sessionFactory;
     private static Session session;
 
@@ -27,21 +27,18 @@ public class PlayerRepository implements IPlayerRepository{
             sessionFactory.close();
     }
 
-    public PlayerRepository() {
+    public WordRepository() {
         initialiseSessionFactory();
         session = sessionFactory.openSession();
     }
 
-    public Player checkUser(String user, String password) {
-        String hql = "FROM Player E WHERE E.userName = :user_name AND E.password=:password";
-        Query query = session.createQuery(hql);
-        query.setParameter("user_name", user);
-        query.setParameter("password", password);
-        List result = query.list();
-
-        if (result.isEmpty()) {
-            return null;
+    public List<Word> getWords() {
+        try
+        {
+            return session.createQuery("SELECT a FROM Word a", Word.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
-
-        return (Player) result.get(0);    }
+    }
 }

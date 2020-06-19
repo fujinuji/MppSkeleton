@@ -10,5 +10,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="scs.mpp.exam.model.Player"/>
+        <mapping class="scs.mpp.exam.model.Round"/>
+        <mapping class="scs.mpp.exam.model.Word"/>
+        <mapping class="scs.mpp.exam.model.Game"/>
     </session-factory>
 </hibernate-configuration>

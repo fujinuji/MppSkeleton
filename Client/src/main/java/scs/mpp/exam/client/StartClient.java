@@ -23,7 +23,7 @@ public class StartClient extends Application {
 
         LoginController ctrl = loader.getController();
         ctrl.setServices(server);
-        primaryStage.setScene(new Scene(root, 300, 300));
+        primaryStage.setScene(new Scene(root, 500, 350));
         primaryStage.show();
     }
 }

@@ -42,6 +42,7 @@ public class LoginController {
             Stage primaryStage = new Stage();
             ctrl.setService(services, player);
             primaryStage.setScene(new Scene(root, 500, 350));
+            primaryStage.setTitle("Logged as " + userName);
             primaryStage.show();
             ((Node)(event.getSource())).getScene().getWindow().hide();
         } catch (Exception e) {

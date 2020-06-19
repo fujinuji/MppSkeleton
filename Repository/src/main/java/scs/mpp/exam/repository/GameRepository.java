@@ -5,12 +5,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
-import scs.mpp.exam.model.Player;
+import scs.mpp.exam.model.Game;
 
-import java.util.List;
-
-public class PlayerRepository implements IPlayerRepository{
+public class GameRepository implements IGameRepository{
     private static SessionFactory sessionFactory;
     private static Session session;
 
@@ -27,21 +24,17 @@ public class PlayerRepository implements IPlayerRepository{
             sessionFactory.close();
     }
 
-    public PlayerRepository() {
+    public GameRepository() {
         initialiseSessionFactory();
         session = sessionFactory.openSession();
     }
 
-    public Player checkUser(String user, String password) {
-        String hql = "FROM Player E WHERE E.userName = :user_name AND E.password=:password";
-        Query query = session.createQuery(hql);
-        query.setParameter("user_name", user);
-        query.setParameter("password", password);
-        List result = query.list();
+    public void saveGame(Game game) {
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(game);
+        session.getTransaction().commit();
+        session.close();
+    }
 
-        if (result.isEmpty()) {
-            return null;
-        }
-
-        return (Player) result.get(0);    }
 }

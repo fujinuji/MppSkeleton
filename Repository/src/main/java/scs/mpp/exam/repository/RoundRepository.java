@@ -6,11 +6,11 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
-import scs.mpp.exam.model.Player;
+import scs.mpp.exam.model.Round;
 
 import java.util.List;
 
-public class PlayerRepository implements IPlayerRepository{
+public class RoundRepository implements IRoundRepository{
     private static SessionFactory sessionFactory;
     private static Session session;
 
@@ -27,21 +27,28 @@ public class PlayerRepository implements IPlayerRepository{
             sessionFactory.close();
     }
 
-    public PlayerRepository() {
+    public RoundRepository() {
         initialiseSessionFactory();
         session = sessionFactory.openSession();
     }
 
-    public Player checkUser(String user, String password) {
-        String hql = "FROM Player E WHERE E.userName = :user_name AND E.password=:password";
+    public void saveRound(Round round) {
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(round);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public List<Round> getByGameId(String gameId) {
+        session = sessionFactory.openSession();
+        String hql = "FROM Round E WHERE E.gameId = :gagemId";
         Query query = session.createQuery(hql);
-        query.setParameter("user_name", user);
-        query.setParameter("password", password);
+        query.setParameter("gagemId",gameId);
         List result = query.list();
 
-        if (result.isEmpty()) {
-            return null;
-        }
+        return (List<Round>) result;
+    }
 
-        return (Player) result.get(0);    }
 }

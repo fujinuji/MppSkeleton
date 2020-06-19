@@ -4,10 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="playerRepo" class="scs.mpp.exam.repository.PlayerRepository"/>
+    <bean id="gameRepo" class="scs.mpp.exam.repository.GameRepository"/>
+    <bean id="wordRepo" class="scs.mpp.exam.repository.WordRepository"/>
+    <bean id="roundRepo" class="scs.mpp.exam.repository.RoundRepository"/>
 
 
     <bean id="service" class="scs.mpp.exam.server.ServicesImpl">
         <constructor-arg ref="playerRepo"/>
+        <constructor-arg ref="gameRepo"/>
+        <constructor-arg ref="wordRepo"/>
+        <constructor-arg ref="roundRepo"/>
     </bean>
 
     <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
